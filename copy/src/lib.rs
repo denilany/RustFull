@@ -22,14 +22,3 @@ pub fn vec_function(b: Vec<i32>) -> (Vec<i32>, Vec<f64>) {
 
     (b, log_values)
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
