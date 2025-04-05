@@ -1,5 +1,13 @@
 pub fn sum(a: &[i32]) -> i32 {
-    a.iter().sum()
+    // a.iter().sum()
+
+    let mut result = 0;
+
+    for num in a.iter() {
+        result += num;
+    }
+
+    result
 }
 
 pub fn thirtytwo_tens() -> [i32; 32] {
