@@ -25,6 +25,6 @@ pub fn check_ms(message: &str) -> Result<&str, &str> {
 
     match msg.send_ms() {
         Some(_) => Ok(message),
-        None => Err("Error: illegal")
+        None => Err("ERROR: illegal")
     }
 }
