@@ -1,4 +1,3 @@
-use std::time::{SystemTime, UNIX_EPOCH};
 use chrono::{DateTime, Utc};
 
 #[derive(Debug, Eq, PartialEq)]
@@ -10,14 +9,8 @@ pub struct FormError {
 
 impl FormError {
     pub fn new(field_name: &'static str, field_value: String, err: &'static str) -> Self {
-        let now = SystemTime::now();
-        let since_epoch = now.duration_since(UNIX_EPOCH).expect("Time went backwards");
-        let datetime = DateTime::<Utc>::from_timestamp(
-            since_epoch.as_secs() as i64,
-            since_epoch.subsec_nanos(),
-        ).unwrap();
-        
-        let date = datetime.format("%Y-%m-%d %H:%M:%S").to_string();
+        let now = Utc::now();
+        let date = now.format("%Y-%m-%d %H:%M:%S").to_string();
         
         Self {
             form_values: (field_name, field_value),
