@@ -1,4 +1,5 @@
-use chrono::{NaiveDate, Weekday as wd, Datelike};
+use chrono::{NaiveDate, Datelike};
+pub use chrono::Weekday as wd;
 
 pub fn middle_day(year: i32) -> Option<wd> {
     let is_leap_year = if (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) {
