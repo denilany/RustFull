@@ -1,4 +1,3 @@
-extern crate case;
 use case::CaseExt;
 use edit_distance::edit_distance;
 
@@ -23,7 +22,6 @@ pub fn expected_variable(original: &str, expected: &str) -> Option<String> {
         let res = ((bigger - diff) * 100) as f64 / bigger as f64;
         
         let resu = res.ceil();
-        
         if resu < 50.0 {
             return None;
         }
