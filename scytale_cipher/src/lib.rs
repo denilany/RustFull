@@ -1,21 +1,24 @@
-pub fn scytale_cipher(message: String, i: u32) -> String {
-    let rows = i as usize;
-    let chars: Vec<char> = message.chars().collect();
-    
-    // Calculate how many columns we need
-    let cols = (chars.len() + rows - 1) / rows;
-
-    // Pad the characters with spaces to fit perfectly in the grid
-    let mut padded = chars.clone();
-    padded.resize(rows * cols, ' ');
-
-    // Read column by column
-    let mut result = String::new();
-    for col in 0..cols {
-        for row in 0..rows {
-            result.push(padded[row * cols + col]);
-        }
+pub fn scytale_cipher(s: String, i: u32) -> String {
+    if i as usize >= s.chars().count() || i == 1 {
+        return s.to_string();
     }
 
-    result
+    let width = (s.chars().count() as f64 / i as f64).ceil() as usize;
+
+    let mut table = vec![vec![' '; width]; i as usize];
+
+    // Fill the table column-wise with characters from the input string
+    for (pos, element) in s.chars().enumerate() {
+        let col = pos % i as usize;
+        let row = pos / i as usize;
+
+        table[col][row] = element;
+    }
+
+    table
+        .iter()
+        .flatten()
+        .collect::<String>()
+        .trim_end()
+        .to_string()
 }
