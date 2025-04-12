@@ -1,4 +1,4 @@
-fn scytale_cipher(message: String, i: u32) -> String {
+pub fn scytale_cipher(message: String, i: u32) -> String {
     let rows = i as usize;
     let chars: Vec<char> = message.chars().collect();
     
