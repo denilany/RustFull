@@ -26,37 +26,42 @@ impl Cart {
         }
     }
     pub fn generate_receipt(&mut self) -> Vec<f32> {
-        let prices: Vec<f32> = self.items.iter().map(|(_, price)| *price).collect();
-
-        // prices.sort_by(|a, b| a.partial_cmp(b).unwrap());
-
-        let mut final_prices = Vec::new();
-
-        let mut i = 0;
-        while i < prices.len() {
-            let end = usize::min(i + 3, prices.len());
-            let chunk = &prices[i..end];
-
-            if chunk.len() == 3 {
-                let cheapest = chunk.iter().cloned().fold(f32::INFINITY, f32::min);
-                let total: f32 = chunk.iter().sum();
-                let discount_ratio = (total - cheapest) / total;
-
-                let mut adjusted_chunk: Vec<f32> = chunk
-                    .iter()
-                    .map(|price| (price * discount_ratio * 100.0).round() / 100.0)
-                    .collect();
-
-                final_prices.append(&mut adjusted_chunk);
-            } else {
-                final_prices.append(&mut chunk.to_vec());
-            }
-
-            i += 3;
+        if self.items.is_empty() {
+            self.receipt = Vec::new();
+            return Vec::new();
         }
 
-        final_prices.sort_by(|a, b| a.partial_cmp(b).unwrap());
-        self.receipt = final_prices.clone();
-        final_prices
+        let mut prices: Vec<f32> = self.items.iter().map(|(_, price)| *price).collect();
+
+        prices.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+        let mut discount_prices = Vec::new();
+        
+        let free_items_count = prices.len() / 3;
+
+        if free_items_count > 0 {
+            let net_price = prices.iter().sum::<f32>();
+
+            let mut free_items_value = 0.0;
+            for i in 0..free_items_count {
+                free_items_value += prices[i];
+            }
+
+            let net_after_discount = net_price - free_items_value;
+
+            // Discount factor
+            let discount_factor = net_after_discount / net_price;
+
+            // Apply discount to all items
+            for &price in &prices {
+                let discounted = (price * discount_factor * 100.0).round() / 100.0;
+                discount_prices.push(discounted);
+            }
+        } else {
+            discount_prices = prices;
+        }
+
+        self.receipt = discount_prices.clone();
+        discount_prices
     }
 }
