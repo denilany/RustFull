@@ -26,9 +26,9 @@ impl Cart {
         }
     }
     pub fn generate_receipt(&mut self) -> Vec<f32> {
-        let mut prices: Vec<f32> = self.items.iter().map(|(_, price)| *price).collect();
+        let prices: Vec<f32> = self.items.iter().map(|(_, price)| *price).collect();
 
-        prices.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        // prices.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
         let mut final_prices = Vec::new();
 
